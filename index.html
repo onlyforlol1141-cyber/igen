@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Little Place to Feel Better</title>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"></head><body><div id="app">
+<h1>A Little Place to Feel Better</h1>
+<div id="hud"><span>⭐ <b id="st">0</b></span><span>🌸 <b id="fl">0</b></span><div id="say"></div></div>
+<canvas id="c" aria-label="A small garden with a cat"></canvas>
+<div class="row" id="tools">
+<button data-t="plant">🌱 Plant</button><button data-t="water">💧 Water</button><button data-t="shovel">⛏ Clear</button></div>
+<div class="row" id="seeds"></div>
+<div class="row">
+<button id="bNotes">💌 Notes<i id="badge"></i></button><button id="bShop">🛍 Shop</button><button id="bBreathe">🌬 Breathe</button><button id="bSound" aria-label="Sound">🔊</button></div>
+<p><small>No timers. Nothing to finish. Your garden keeps growing while you’re away.</small></p>
+</div>
+<div id="modal"></div>
+<script src="data.js"></script>
+<script src="game.js"></script>
+</body></html>

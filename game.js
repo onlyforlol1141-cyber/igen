@@ -1,56 +1,5 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>A Little Place to Feel Better</title>
-<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@500;700&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#1b1730;--ink:#f6efe3;--card:#2b2547;--acc:#f4b860;--btn:#3a3260;--on:#6a5aa8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f5ead8;--ink:#3a2f4d;--card:#fff7ea;--btn:#ecdcc0;--on:#f4b860}}
-:root[data-theme="dark"]{--bg:#1b1730;--ink:#f6efe3;--card:#2b2547;--btn:#3a3260;--on:#6a5aa8}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Nunito,system-ui,sans-serif;display:flex;justify-content:center}
-#app{width:100%;max-width:880px;padding:12px}
-h1{font:700 22px 'Pixelify Sans',monospace;margin:4px 0 8px}
-#hud{display:flex;gap:14px;align-items:center;min-height:30px;margin-bottom:6px}
-#hud b{font-family:'Pixelify Sans',monospace;font-size:18px}
-#say{flex:1;text-align:right;opacity:.9;min-height:24px}
-canvas{width:100%;aspect-ratio:16/10;image-rendering:pixelated;border-radius:12px;display:block;touch-action:manipulation;cursor:pointer}
-.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center}
-button{font:700 15px Nunito,sans-serif;color:var(--ink);background:var(--btn);border:2px solid transparent;border-radius:12px;padding:8px 12px;cursor:pointer;position:relative}
-button[aria-pressed=true]{background:var(--on);border-color:var(--acc)}
-button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
-#badge{position:absolute;top:-4px;right:-4px;width:12px;height:12px;border-radius:50%;background:#ff7a8a;display:none}
-#modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(10,8,25,.65);padding:16px;z-index:5}
-#modal.on{display:grid}
-.card{background:var(--card);border-radius:18px;padding:22px;max-width:400px;width:100%;max-height:82vh;overflow:auto;text-align:center}
-.card h2{font:700 24px 'Pixelify Sans',monospace;margin:0 0 8px}
-.note{font-size:19px;line-height:1.5;margin:14px 0 18px}
-.card .row{justify-content:center}
-input{font:inherit;padding:8px 12px;border-radius:10px;border:2px solid var(--on);background:var(--bg);color:var(--ink);text-align:center;width:160px}
-.item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;text-align:left}
-.bw{height:170px;display:grid;place-items:center}
-#bc{width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,#f9d9a0,#f4b860 70%);transform:scale(.5)}
-small{opacity:.7}
-</style></head><body><div id="app">
-<h1>A Little Place to Feel Better</h1>
-<div id="hud"><span>⭐ <b id="st">0</b></span><span>🌸 <b id="fl">0</b></span><div id="say"></div></div>
-<canvas id="c" aria-label="A small garden with a cat"></canvas>
-<div class="row" id="tools">
-<button data-t="plant">🌱 Plant</button><button data-t="water">💧 Water</button><button data-t="shovel">⛏ Clear</button></div>
-<div class="row" id="seeds"></div>
-<div class="row">
-<button id="bNotes">💌 Notes<i id="badge"></i></button><button id="bShop">🛍 Shop</button><button id="bBreathe">🌬 Breathe</button><button id="bSound" aria-label="Sound">🔊</button></div>
-<p><small>No timers. Nothing to finish. Your garden keeps growing while you’re away.</small></p>
-</div>
-<div id="modal"></div>
-<script>
 const $=s=>document.querySelector(s),rnd=Math.random,K='lpfb1',now=()=>Date.now();
 const W=320,H=200,cv=$('#c'),g=cv.getContext('2d');cv.width=W;cv.height=H;
-const T={daisy:{n:'Daisy',c:'#fff',m:'#f5c542',cost:0,ms:25000,h:12},tulip:{n:'Tulip',c:'#f27a9b',m:'#d94f7a',cost:0,ms:30000,h:12},sunflower:{n:'Sunflower',c:'#f7c93b',m:'#6b4423',cost:5,ms:40000,h:17},lavender:{n:'Lavender',c:'#a68be0',m:'#7e62c2',cost:8,ms:35000,h:13},rose:{n:'Rose',c:'#e0445a',m:'#a82a40',cost:12,ms:45000,h:13},moon:{n:'Moonflower',c:'#d6ecff',m:'#8fc2f0',cost:16,ms:50000,h:14}};
-const D={lights:{n:'String lights',cost:6},butter:{n:'Butterflies',cost:8},bench:{n:'Little bench',cost:10},chime:{n:'Wind chime',cost:12},pond:{n:'Pond with fish',cost:14}};
-const NOTES=["You don’t have to do anything here. Just being here is enough.","Rest counts as doing something.","Today can be small. Small is allowed.","Flowers don’t hurry. You don’t have to either.","Some days the only goal is to get through. That’s a real goal.","You are not a burden. Not even on the heavy days.","It’s okay to go quiet. The garden keeps growing either way.","Be as gentle with yourself as you would be with a friend.","Feelings are weather, not climate. This one will pass, even if slowly.","If you drank some water today, that’s a win. Truly.","Nobody here is keeping score.","You’ve gotten through every hard day so far. That’s a perfect record.","Take a breath. Let your shoulders drop a little.","You’re allowed to take up space exactly as you are.","Even the moon takes nights off. It just looks different.","Asking for company is brave, not annoying.","Hard thoughts are loud, but loud doesn’t mean true.","Sleep is also a way of looking after yourself.","There is no deadline for feeling better.","The mountains are still there whenever you want a bit of calm.","A tiny step is still a step. Even looking at flowers counts.","If it ever gets too heavy, tell someone you trust. You don’t have to carry it alone.","Someone out there is glad you exist. Probably more than one.","You can start again at any hour of any day."];
-const CAT=["purrrr…","mrrp.","*slow blink*","you’re doing okay.","*headbutt*","nothing to do but be warm.","*kneads the grass*","mew."];
 const def=()=>({stars:3,tot:0,seen:0,name:'Mochi',own:['daisy','tulip'],decor:[],sel:'daisy',tool:'plant',sound:true,started:0,last:now(),plots:Array(24).fill(null)});
 let S=def();try{const r=JSON.parse(localStorage.getItem(K));if(r)S=Object.assign(def(),r)}catch(e){}
 const away=now()-S.last;
@@ -196,4 +145,3 @@ if(!S.started){open(`<h2>A little place to feel better</h2><p>A quiet garden, a 
 else if(away>36e5)say('Welcome back. Your garden kept growing while you were away.');
 else say('Hi again.');
 requestAnimationFrame(frame);
-</script></body></html>
